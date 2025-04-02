@@ -1,10 +1,13 @@
 package com.example.tagtaskschedule.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "author")
+@Getter
+@NoArgsConstructor
 public class Author extends BaseEntity {
 
     @Id
@@ -16,4 +19,9 @@ public class Author extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    public Author(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }

@@ -1,7 +1,13 @@
 package com.example.tagtaskschedule.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "schedule")
+@Getter
+@NoArgsConstructor
 public class Schedule extends BaseEntity {
 
     @Id
@@ -24,4 +30,12 @@ public class Schedule extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
+
+    public Schedule(String scheduleDate, String taskContent, FocusTag focusTag, String password,Author author) {
+        this.scheduleDate = scheduleDate;
+        this.taskContent = taskContent;
+        this.focusTag = focusTag;
+        this.password =password;
+        this.author = author;
+    }
 }
