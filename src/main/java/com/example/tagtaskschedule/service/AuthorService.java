@@ -8,11 +8,9 @@ import com.example.tagtaskschedule.dto.AuthorResponseDto;
  */
 public interface AuthorService {
 
-    /**
-     * 작성자를 등록합니다.
-     *
-     * @param requestDto 작성자 등록 요청 DTO
-     * @return 작성자 응답 DTO
-     */
     AuthorResponseDto registerAuthor(AuthorRequestDto requestDto);
+    AuthorResponseDto getAuthor(Long id);
+    void updatePassword(Long id, String oldPassword, String newPassword);
+    void deleteAuthor(Long id);
+
 }

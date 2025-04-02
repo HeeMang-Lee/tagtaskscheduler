@@ -5,7 +5,9 @@ import com.example.tagtaskschedule.dto.AuthorResponseDto;
 import com.example.tagtaskschedule.entity.Author;
 import com.example.tagtaskschedule.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * 작성자(Author) 관련 비즈니스 로직 구현체
@@ -24,7 +26,11 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public AuthorResponseDto registerAuthor(AuthorRequestDto requestDto) {
-        Author author = new Author(requestDto.getName(), requestDto.getEmail() );
+        Author author = new Author(
+                requestDto.getName(),
+                requestDto.getEmail(),
+                requestDto.getPassword()
+        );
         Author savedAuthor = authorRepository.save(author);
 
         return new AuthorResponseDto(
@@ -34,5 +40,53 @@ public class AuthorServiceImpl implements AuthorService {
                 savedAuthor.getCreatedAt(),
                 savedAuthor.getModifiedAt()
         );
+    }
+
+    /**
+     * 작성자 단건을 조회합니다.
+     *
+     * @param id 작성자 ID
+     * @return 작성자 응답 DTO
+     */
+    @Override
+    public AuthorResponseDto getAuthor(Long id) {
+        Author author = authorRepository.findByIdOrElseThrow(id);
+
+        return new AuthorResponseDto(
+                author.getId(),
+                author.getName(),
+                author.getEmail(),
+                author.getCreatedAt(),
+                author.getModifiedAt()
+        );
+    }
+
+    /**
+     * 비밀번호를 수정합니다.
+     *
+     * @param id 작성자 ID
+     * @param oldPassword 기존 비밀번호
+     * @param newPassword 새로운 비밀번호
+     */
+    @Override
+    public void updatePassword(Long id, String oldPassword, String newPassword) {
+        Author author = authorRepository.findByIdOrElseThrow(id);
+
+        if (!author.getPassword().equals(oldPassword)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
+
+        author.updatePassword(newPassword);
+    }
+
+    /**
+     * 작성자를 삭제합니다.
+     *
+     * @param id 작성자 ID
+     */
+    @Override
+    public void deleteAuthor(Long id) {
+        Author author = authorRepository.findByIdOrElseThrow(id);
+        authorRepository.delete(author);
     }
 }
