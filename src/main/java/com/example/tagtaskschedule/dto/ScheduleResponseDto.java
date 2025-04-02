@@ -68,6 +68,13 @@ public class ScheduleResponseDto {
         private final String name;
         private final String email;
 
+        /**
+         * AuthorInfo 생성자
+         *
+         * @param id
+         * @param name
+         * @param email
+         */
         public AuthorInfo(Long id, String name, String email) {
             this.id  = id;
             this.name = name;

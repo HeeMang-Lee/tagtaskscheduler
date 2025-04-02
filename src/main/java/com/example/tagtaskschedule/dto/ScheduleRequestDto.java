@@ -36,25 +36,17 @@ public class ScheduleRequestDto {
     private Long authorId;
 
     /**
-     * 비밀번호 (필수, 공백 불가)
-     */
-    @NotBlank(message = "비밀번호는 필수입니다.")
-    private String password;
-
-    /**
      * ScheduleRequestDto 생성자
      *
-     * @param scheduleDate
-     * @param taskContent
-     * @param focusTag
-     * @param authorId
-     * @param password
+     * @param scheduleDate 일정 날짜
+     * @param taskContent 일정 내용
+     * @param focusTag 집중 태그
+     * @param authorId 작성자 ID
      */
-    public ScheduleRequestDto(String scheduleDate, String taskContent, FocusTag focusTag, Long authorId, String password) {
+    public ScheduleRequestDto(String scheduleDate, String taskContent, FocusTag focusTag, Long authorId) {
         this.scheduleDate = scheduleDate;
         this.taskContent = taskContent;
         this.focusTag = focusTag;
         this.authorId = authorId;
-        this.password = password;
     }
 }
