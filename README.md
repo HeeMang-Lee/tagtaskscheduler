@@ -9,7 +9,7 @@
 ## 1️. 일정 생성
 Method: POST  
 URL: /api/schedules  
-필수값: scheduleDate, taskContent, focusTag, authorId, password
+필수값: scheduleDate, taskContent, focusTag, authorId
 
 요청 본문 예시:
 
@@ -19,7 +19,6 @@ URL: /api/schedules
     "taskContent": "블로그 작성 및 회고 정리",
     "focusTag": "DEEP_WORK",
     "authorId": 1,
-    "password": "1234"
 }
 ```
 응답:
@@ -92,7 +91,7 @@ URL: /api/schedules/{id}
 ## 4️. 일정 수정
 Method: PUT  
 URL: /api/schedules/{id}  
-필수값: scheduleDate, taskContent, focusTag, authorId, password
+필수값: scheduleDate, taskContent, focusTag, authorId
 
 요청 예시:
 
@@ -102,7 +101,6 @@ URL: /api/schedules/{id}
     "taskContent": "API 명세 작성 마무리",
     "focusTag": "STUDY",
     "authorId": 1,
-    "password": "1234"
 }
 ```
 응답:
@@ -128,13 +126,6 @@ URL: /api/schedules/{id}
 Method: DELETE  
 URL: /api/schedules/{id}
 
-요청:
-
-```json
-{
-  "password": "1234"
-}
-```
 응답:
 
 ```json
@@ -234,9 +225,8 @@ URL:/api/authors/{id}
 │ email                  │         │ schedule_date        │
 │ password               │         │ task_content         │
 │ created_at             │         │ focus_tag (ENUM)     │
-│ modified_at            │         │ password             │
-└────────────────────────┘         │ created_at           │
-                                   │ modified_at          │
+│ modified_at            │         │ created_at           │
+└────────────────────────┘         │ modified_at          │
                                    └──────────────────────┘
 ```
 
@@ -250,7 +240,6 @@ URL:/api/authors/{id}
 | `schedule_date`| VARCHAR   | NOT NULL                                      |
 | `task_content` | TEXT      | NOT NULL                                      |
 | `focus_tag`    | ENUM      | NOT NULL (e.g., `DEEP_WORK` 등으로 제한)      |
-| `password`     | VARCHAR   | NOT NULL                                      |
 | `created_at`   | DATETIME  | NOT NULL                                      |
 | `modified_at`  | DATETIME  | NOT NULL                                      |
 
