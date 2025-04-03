@@ -89,4 +89,24 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = authorRepository.findByIdOrElseThrow(id);
         authorRepository.delete(author);
     }
+
+    /**
+     * 로그인 요청을 처리합니다.
+     *
+     * @param email 이메일 (로그인 식별자)
+     * @param password 비밀번호
+     * @return 로그인 성공한 Author 객체
+     * @throws ResponseStatusException 로그인 실패 시 401 에러
+     */
+    @Override
+    public Author login(String email, String password) {
+        Author author = authorRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "등록되지 않은 이메일입니다."));
+
+        if (!author.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
+
+        return author;
+    }
 }

@@ -203,17 +203,72 @@ URL:/api/authors/{id}
 ```json
 204 No Content
 ```
-## 필드 유효성 규칙
-- scheduleDate: 필수
+---
 
-- taskContent: 필수, 공백 불가
+## 10. 로그인
 
-- focusTag: 필수 (Enum: DEEP_WORK, STUDY, CREATIVE, REST, ETC 등)
+Method: POST  
+URL: /api/auth/login  
+선행조건 : 작성자 등록 후 로그인
 
-- authorId: 필수
+요청
+```json
+  "email": "lee@naver.com",
+  "password": "1234"
+```
 
-- password: 필수
+응답
+```json
+200 OK
 
+"로그인 성공"
+```
+
+예외 응답  
+
+- 이메일 미존재
+```json
+{
+  "status": 401,
+  "message": "등록되지 않은 이메일입니다."
+}
+```
+
+- 비밀번호 불일치
+```json
+{
+  "status": 401,
+  "message": "비밀번호가 일치하지 않습니다."
+}
+```
+---
+## 11. 로그아웃
+
+Method : POST  
+URL : /api/auth/logout
+
+응답
+```json
+200 OK
+
+"로그아웃 성공"
+```
+---
+##  필드 유효성 규칙
+
+| 필드명        | DTO 위치                             | 어노테이션                        | 설명                              |
+|---------------|--------------------------------------|----------------------------------|-----------------------------------|
+| `name`        | `AuthorRequestDto`                   | `@NotBlank`                      | 이름은 공백 없이 필수              |
+| `email`       | `AuthorRequestDto`, `LoginRequestDto` | `@NotBlank`, `@Email`            | 이메일은 공백 없이 필수, 형식 검사 포함 |
+| `password`    | `AuthorRequestDto`, `LoginRequestDto`, `UpdatePasswordRequestDto` | `@NotBlank` | 비밀번호는 공백 없이 필수         |
+| `oldPassword` | `UpdatePasswordRequestDto`           | `@NotBlank`                      | 기존 비밀번호는 공백 없이 필수     |
+| `newPassword` | `UpdatePasswordRequestDto`           | `@NotBlank`                      | 새로운 비밀번호는 공백 없이 필수   |
+| `scheduleDate`| `ScheduleRequestDto`                 | `@NotBlank`                      | 일정 날짜는 공백 없이 필수         |
+| `taskContent` | `ScheduleRequestDto`                 | `@NotBlank`                      | 할 일 내용은 공백 없이 필수        |
+| `focusTag`    | `ScheduleRequestDto`                 | `@NotNull`                       | 집중 태그(FocusTag)는 필수         |
+| `authorId`    | `ScheduleRequestDto`                 | `@NotNull`                       | 작성자 ID는 필수                   |
+
+---
 # ERD 설계 (Focus Mode 버전)
 
 ```pgsql

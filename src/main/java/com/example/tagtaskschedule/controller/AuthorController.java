@@ -60,6 +60,12 @@ public class AuthorController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * 작성자 삭제
+     *
+     * @param id 작성자 ID
+     * @return 성공 응답
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         authorService.deleteAuthor(id);
