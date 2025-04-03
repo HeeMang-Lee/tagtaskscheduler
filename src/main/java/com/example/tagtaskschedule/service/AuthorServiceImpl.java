@@ -1,5 +1,6 @@
 package com.example.tagtaskschedule.service;
 
+import com.example.tagtaskschedule.config.PassWordEncoder;
 import com.example.tagtaskschedule.dto.AuthorRequestDto;
 import com.example.tagtaskschedule.dto.AuthorResponseDto;
 import com.example.tagtaskschedule.entity.Author;
@@ -19,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
+    private final PassWordEncoder passWordEncoder;
 
     /**
      * 작성자를 등록합니다.
@@ -33,10 +35,11 @@ public class AuthorServiceImpl implements AuthorService {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
 
+        String encodedPassword = passWordEncoder.encode(requestDto.getPassword());
         Author author = new Author(
                 requestDto.getName(),
                 requestDto.getEmail(),
-                requestDto.getPassword()
+                encodedPassword
         );
         Author savedAuthor = authorRepository.save(author);
 
@@ -108,10 +111,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author login(String email, String password) {
         Author author = authorRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "등록되지 않은 이메일입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
 
-        if (!author.getPassword().equals(password)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        if (!passWordEncoder.isPassword(password, author.getPassword())) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
         }
 
         return author;
