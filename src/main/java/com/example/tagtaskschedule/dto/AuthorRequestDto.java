@@ -2,6 +2,7 @@ package com.example.tagtaskschedule.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 /**
@@ -14,6 +15,7 @@ public class AuthorRequestDto {
      * 작성자 이름 (필수, 공백 불가)
      */
     @NotBlank(message = "이름은 필수입니다.")
+    @Size(max = 4, message = "이름은 4자 이하여야 합니다.")
     private final String name;
 
     /**

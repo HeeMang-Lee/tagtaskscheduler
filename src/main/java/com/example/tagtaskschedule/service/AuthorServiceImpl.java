@@ -3,6 +3,8 @@ package com.example.tagtaskschedule.service;
 import com.example.tagtaskschedule.dto.AuthorRequestDto;
 import com.example.tagtaskschedule.dto.AuthorResponseDto;
 import com.example.tagtaskschedule.entity.Author;
+import com.example.tagtaskschedule.exception.CustomException;
+import com.example.tagtaskschedule.exception.ErrorCode;
 import com.example.tagtaskschedule.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,11 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public AuthorResponseDto registerAuthor(AuthorRequestDto requestDto) {
+
+        if (authorRepository.findByEmail(requestDto.getEmail()).isPresent()) {
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
+
         Author author = new Author(
                 requestDto.getName(),
                 requestDto.getEmail(),
