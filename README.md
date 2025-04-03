@@ -3,7 +3,7 @@
 ## 기본 URL
 
 ``` bash
-/api/schedules
+/api
 ```  
 ---
 ## 1️. 일정 생성

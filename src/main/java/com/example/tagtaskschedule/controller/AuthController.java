@@ -43,4 +43,21 @@ public class AuthController {
 
         return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
     }
+
+    /**
+     * 로그아웃 요청
+     *
+     * @param request HttpServletRequest(세션 제거에 사용)
+     * @return 로그아웃 성공 메시지
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+    }
 }

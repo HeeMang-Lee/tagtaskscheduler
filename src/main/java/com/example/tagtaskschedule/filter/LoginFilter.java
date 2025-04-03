@@ -19,7 +19,7 @@ public class LoginFilter implements Filter {
     /**
      * 인증이 필요 없는 URL 목록
      */
-    private static final String[] WHITE_LIST = {"/", "/user/signup", "/api/auth/login", "/logout", "/api/authors"};
+    private static final String[] WHITE_LIST = {"/", "/user/signup", "/api/auth/login", "api/auth/logout", "/api/authors"};
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
