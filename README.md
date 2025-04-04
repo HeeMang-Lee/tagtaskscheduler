@@ -1,3 +1,99 @@
+# 테마별 집중 스케줄 앱 (Focused Schedule API)
+
+## 프로젝트 개요
+
+이 프로젝트는 사용자의 집중 테마(Deep Work, Study, Creative 등)에 맞춰 할 일을 관리할 수 있도록 설계된 RESTful API 서버입니다. 사용자는 일정 날짜, 할 일 내용, 집중 태그(focusTag)를 등록하고, 원하는 조건(작성자 ID, 태그, 날짜 등)으로 일정을 조회, 수정, 삭제할 수 있습니다.
+
+기본적인 일정 CRUD 기능 외에도 작성자 정보를 Author 테이블로 분리하여 일정과 연관관계를 설정하였으며, 로그인 기능을 통해 인증 기반 API 사용도 가능하도록 구현되었습니다. JPA를 중심으로 3 Layer Architecture, DTO 기반 응답 설계, 예외 처리 전략 등을 학습하는 것을 목표로 진행되었습니다.
+
+---
+
+## 주요 기능
+
+- 회원 가입 및 로그인 (세션 기반 인증)
+- 일정 등록 (작성자와 연관, 집중 태그 포함)
+- 전체 일정 조건 조회 (작성자 ID, FocusTag, 수정일 등 필터)
+- 일정 단건 조회
+- 일정 수정 및 삭제
+- 입력값 유효성 검증 처리 (필수값, 이메일 형식, 글자 수 제한 등)
+- 전역 예외 처리 적용 (`@ControllerAdvice`, `CustomException` 등)
+
+---
+
+## 기술 스택
+
+- Java 17
+- Spring Boot 3
+- Spring Data JPA + MySQL
+- Lombok
+- Gradle (Build Tool)
+- Postman (API 테스트)
+
+---
+
+## 프로젝트 구조 (도메인 기반 3 Layer Architecture)
+
+com.example.project   
+├── common # 공통 코드 (BaseEntity, 예외 등)  
+├── config # 설정 관련 (Filter 등록, Encoder 등)  
+├── auth # 인증 도메인 (컨트롤러, DTO, 필터)  
+├── author # 작성자 도메인  
+│ ├── controller  
+│ ├── dto  
+│ ├── repository   
+│ └── service    
+├── schedule # 일정 도메인  
+│ ├── controller  
+│ ├── dto  
+│ ├── repository  
+│ └── service  
+└── ScheduleApplication.java  
+
+---
+
+## 설계 및 개발 포인트
+
+### 1. DTO를 통한 응답 일관성 유지
+
+- 모든 API 응답은 Entity가 아닌 DTO를 통해 반환
+- 계층 간 책임 분리, 응답 포맷 일관성 확보
+
+### 2. 작성자와 일정 간 연관관계 구현 (1:N)
+
+- 일정(Schedule)은 작성자(Author)의 ID를 외래키로 저장
+- 응답 DTO에는 작성자의 이름, 이메일이 함께 포함됨
+
+### 3. FocusTag Enum 도입
+
+- 일정 등록 시 사용자가 선택한 집중 태그를 ENUM으로 관리 (e.g., DEEP_WORK, STUDY 등)
+- Enum 기반 유효성 검증 적용
+
+### 4. 전역 예외 처리 구조 도입
+
+- `ErrorCode` Enum + `CustomException` + `GlobalExceptionHandler`
+- Bean Validation 실패, 인증 실패, 도메인 예외 등 일관된 JSON 응답 처리
+
+### 5. 필터 기반 세션 인증
+
+- `LoginFilter`를 통해 인증이 필요한 URL 접근 시 세션 검증
+- 로그인/회원가입/루트 URL은 화이트리스트로 설정하여 인증 제외
+
+---
+## 트러블 슈팅
+
+링크 : https://pear-bagel-027.notion.site/Spring-Task-Focus-Scheduler-API-1cbf73098d8580aaa25cfd9fa335725c?pvs=74
+
+---
+## 개발 완료 상태
+
+- [x] 회원가입 / 로그인 / 로그아웃 구현
+- [x] 세션 기반 인증 및 인증 필터 적용
+- [x] 일정 등록/조회/수정/삭제 API 완성
+- [x] FocusTag Enum 기반 일정 필터링 구현
+- [x] 유효성 검증 및 전역 예외 처리 적용
+- [x] ERD 설계 및 API 명세서 정리 완료
+- [x] Postman 테스트 완료 및 문서화
+
 # 테마별 집중 스케줄 앱 API 명세서
 
 ## 기본 URL
