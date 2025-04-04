@@ -1,6 +1,6 @@
 package com.example.tagtaskschedule.config;
 
-import com.example.tagtaskschedule.filter.LoginFilter;
+import com.example.tagtaskschedule.auth.filter.LoginFilter;
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
